@@ -1,0 +1,45 @@
+.list {
+  border: 1px solid var(--color-blue);
+  box-shadow: var(--box-shadow);
+  list-style: none;
+}
+
+.tabsList {
+  display: flex;
+  border-bottom: 1px solid var(--color-light-grey);
+}
+
+.tabsTrigger {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  align-items: center;
+  padding: 0 20px;
+  height: 45px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1;
+  background-color: white;
+  border: none;
+  user-select: none;
+
+  &[data-state="active"] {
+    color: var(--color-white);
+    background-color: var(--color-blue);
+  }
+
+  &:not([data-state="active"]) {
+    &:hover {
+      opacity: 0.8;
+      cursor: pointer;
+    }
+
+    &:not(:last-child) {
+      border-right: 1px solid var(--color-light-grey);
+    }
+  }
+}
+
+.tabsContent {
+  padding: 15px 20px;
+}

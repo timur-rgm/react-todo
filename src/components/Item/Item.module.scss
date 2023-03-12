@@ -1,0 +1,83 @@
+.item {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px 0;
+  vertical-align: center;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-light-grey);
+  }
+
+  &.completed {
+    text-decoration: line-through;
+
+    & .completeIcon {
+      opacity: 1;
+    }
+  }
+}
+
+.completeIcon {
+  margin-right: 15px;
+  opacity: 0.3;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+.editIcon {
+  margin-left: 10px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.itemtem:hover .editIcon {
+  opacity: 0.2;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+.moveIcon {
+  margin-left: 5px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.item:hover .moveIcon {
+  opacity: 0.2;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+.closeIcon {
+  margin-left: auto;
+  opacity: 0.2;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
