@@ -1,9 +1,5 @@
 export type TodoType = {
+  id: string;
   title: string;
-  status: TodoStatus;
+  isCompleted: boolean;
 };
-
-export enum TodoStatus {
-  Active = "ACTIVE",
-  Completed = "COMPLETED",
-}

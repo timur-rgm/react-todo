@@ -4,13 +4,26 @@ import checkmarkIcon from "../../assets/images/checkmark-icon.svg";
 import moveIcon from "../../assets/images/move-icon.svg";
 import editIcon from "../../assets/images/edit-icon.svg";
 import closeIcon from "../../assets/images/close-icon.svg";
+import { useDispatch } from "react-redux";
+import { changeTodoStatus, deleteTodo } from "../../store/todo/todoSlice";
 
 type ItemProps = {
+  id: string;
   title: string;
-  isCompleted?: boolean;
+  isCompleted: boolean;
 };
 
-function Item({ title, isCompleted }: ItemProps): JSX.Element {
+function Item({ id, title, isCompleted }: ItemProps): JSX.Element {
+  const dispatch = useDispatch();
+
+  const handleCompleteClick = () => {
+    dispatch(changeTodoStatus(id));
+  };
+
+  const handleDeleteClick = () => {
+    dispatch(deleteTodo(id));
+  };
+
   return (
     <li className={cn(styles.item, { [styles.completed]: isCompleted })}>
       <img
@@ -20,8 +33,9 @@ function Item({ title, isCompleted }: ItemProps): JSX.Element {
         title="Завершить"
         width={25}
         height={25}
+        onClick={handleCompleteClick}
       />
-      {title}
+      <p>{title}</p>
       <img
         className={styles.editIcon}
         src={editIcon}
@@ -45,6 +59,7 @@ function Item({ title, isCompleted }: ItemProps): JSX.Element {
         title="Удалить"
         width={22}
         height={22}
+        onClick={handleDeleteClick}
       />
     </li>
   );

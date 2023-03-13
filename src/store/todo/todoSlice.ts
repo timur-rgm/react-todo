@@ -3,28 +3,29 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { TodoType } from "../../types/todo";
 
 export interface CounterState {
-  todos: TodoType[];
+  todoList: TodoType[];
 }
 
 const initialState: CounterState = {
-  todos: [],
+  todoList: [],
 };
 
 export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    increment: (state) => {
-      // state.value += 1;
+    addTodo: (state, action: PayloadAction<TodoType>) => {
+      state.todoList.push(action.payload);
     },
-    decrement: (state) => {
-      // state.value -= 1;
+    changeTodoStatus: (state, action: PayloadAction<string>) => {
+      const todo = state.todoList.find((item) => item.id === action.payload);
+      todo && (todo.isCompleted = !todo.isCompleted)
     },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      // state.value += action.payload;
+    deleteTodo: (state, action: PayloadAction<string>) => {
+      state.todoList = state.todoList.filter((todo) => todo.id !== action.payload)
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = todoSlice.actions;
+export const { addTodo, changeTodoStatus, deleteTodo } = todoSlice.actions;
 export default todoSlice.reducer;

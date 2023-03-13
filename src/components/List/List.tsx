@@ -1,35 +1,61 @@
 import * as Tabs from "@radix-ui/react-tabs";
+import { useSelector } from "react-redux";
+import {
+  getAllTodos,
+  getActiveTodos,
+  getCompletedTodos,
+} from "../../store/todo/selectors";
 import Item from "../Item/Item";
 import styles from "./List.module.scss";
 
 function List(): JSX.Element {
+  const allTodos = useSelector(getAllTodos);
+  const activeTodos = useSelector(getActiveTodos);
+  const completedTodos = useSelector(getCompletedTodos);
+
   return (
     <ul className={styles.list}>
       <Tabs.Root defaultValue="tab1">
         <Tabs.List className={styles.tabsList} aria-label="Manage your account">
           <Tabs.Trigger className={styles.tabsTrigger} value="tab1">
-            Все (4)
+            Все ({allTodos.length})
           </Tabs.Trigger>
           <Tabs.Trigger className={styles.tabsTrigger} value="tab2">
-            Активные (3)
+            Активные ({activeTodos.length})
           </Tabs.Trigger>
           <Tabs.Trigger className={styles.tabsTrigger} value="tab3">
-            Завершенные (1)
+            Завершенные ({completedTodos.length})
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content className={styles.tabsContent} value="tab1">
-          <Item title="Разработка архитектуры проекта" />
-          <Item title="Разворачивание и старт проекта" />
-          <Item title="Пробелы в теории" />
-          <Item title="Заплатить за свет" isCompleted />
+          {allTodos.map((todo) => (
+            <Item
+              id={todo.id}
+              title={todo.title}
+              isCompleted={todo.isCompleted}
+              key={todo.id}
+            />
+          ))}
         </Tabs.Content>
         <Tabs.Content className={styles.tabsContent} value="tab2">
-          <Item title="Разработка архитектуры проекта" />
-          <Item title="Разворачивание и старт проекта" />
-          <Item title="Пробелы в теории" />
+          {activeTodos.map((todo) => (
+            <Item
+              id={todo.id}
+              title={todo.title}
+              isCompleted={todo.isCompleted}
+              key={todo.id}
+            />
+          ))}
         </Tabs.Content>
         <Tabs.Content className={styles.tabsContent} value="tab3">
-          <Item title="Заплатить за свет" isCompleted />
+          {completedTodos.map((todo) => (
+            <Item
+              id={todo.id}
+              title={todo.title}
+              isCompleted={todo.isCompleted}
+              key={todo.id}
+            />
+          ))}
         </Tabs.Content>
       </Tabs.Root>
     </ul>
