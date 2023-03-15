@@ -4,6 +4,12 @@
   list-style: none;
 }
 
+.listEmpty {
+  margin-top: 50px;
+  text-align: center;
+  color: grey;
+}
+
 .tabsList {
   display: flex;
   border-bottom: 1px solid var(--color-light-grey);

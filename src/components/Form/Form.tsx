@@ -25,7 +25,7 @@ function Form() {
       <input
         className={styles.input}
         type="text"
-        placeholder="Напишите задачу..."
+        placeholder="Придумайте задачу"
         value={inputValue}
         onChange={(evt) => handleInputChange(evt.target.value)}
       />
