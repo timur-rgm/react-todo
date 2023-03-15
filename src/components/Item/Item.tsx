@@ -13,7 +13,7 @@ type ItemProps = {
   isCompleted: boolean;
 };
 
-function Item({ id, title, isCompleted }: ItemProps): JSX.Element {
+function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
   const dispatch = useDispatch();
 
   const handleCompleteClick = () => {
