@@ -6,11 +6,11 @@ import {
   getCompletedTodos,
 } from "../../store/todo/selectors";
 import Item from "../Item/Item";
+import { useTabValue } from "../../hooks/useTabValue";
 import styles from "./List.module.scss";
-import { useState } from "react";
 
 function List(): JSX.Element {
-  const [currentTabValue, setCurrentTabValue] = useState("tab1");
+  const [value, setValue] = useTabValue();
 
   const todos = useSelector(getAllTodos);
   const activeTodos = useSelector(getActiveTodos);
@@ -20,60 +20,19 @@ function List(): JSX.Element {
   const isActiveTodosEmpty = !activeTodos.length;
   const isCompletedTodosEmpty = !completedTodos.length;
 
-  const tabValues = {
-    all: "tab1",
-    active: "tab2",
-    completed: "tab3",
-  }
-
-  const handleValueChange = (value: string) => {
-    setCurrentTabValue(value);
-  };
-
-  const getValue = (): string => {
-    let value = tabValues.all;
-
-    if (currentTabValue === tabValues.active) {
-      if (isActiveTodosEmpty) {
-        value = tabValues.all;
-        setCurrentTabValue(tabValues.all);
-      } else {
-        value = currentTabValue;
-      }
-
-      return value;
-    }
-
-    if (currentTabValue === tabValues.completed) {
-      if (isCompletedTodosEmpty) {
-        value = tabValues.all;
-        setCurrentTabValue(tabValues.all);
-      } else {
-        value = currentTabValue;
-      }
-
-      return value;
-    }
-
-    return value;
-  };
-
   if (!isTodosEmpty) {
     return (
       <ul className={styles.list}>
         <Tabs.Root
           defaultValue="tab1"
-          value={getValue()}
-          onValueChange={(value) => handleValueChange(value)}
+          value={value}
+          onValueChange={(value) => setValue(value)}
         >
           <Tabs.List
             className={styles.tabsList}
             aria-label="Manage your account"
           >
-            <Tabs.Trigger
-              className={styles.tabsTrigger}
-              value="tab1"
-            >
+            <Tabs.Trigger className={styles.tabsTrigger} value="tab1">
               Все ({todos.length})
             </Tabs.Trigger>
             <Tabs.Trigger
@@ -91,11 +50,7 @@ function List(): JSX.Element {
               Завершенные ({completedTodos.length})
             </Tabs.Trigger>
           </Tabs.List>
-          <Tabs.Content
-            className={styles.tabsContent}
-            value="tab1"
-            onChange={() => console.log("change")}
-          >
+          <Tabs.Content className={styles.tabsContent} value="tab1">
             {todos.map((todo) => (
               <Item
                 id={todo.id}
