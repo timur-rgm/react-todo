@@ -7,6 +7,7 @@ import {
 } from "../../store/todo/selectors";
 import Item from "../Item/Item";
 import { useTabValue } from "../../hooks/useTabValue";
+import { tabValues } from "../../const/tabs";
 import styles from "./List.module.scss";
 
 function List(): JSX.Element {
@@ -16,76 +17,72 @@ function List(): JSX.Element {
   const activeTodos = useSelector(getActiveTodos);
   const completedTodos = useSelector(getCompletedTodos);
 
-  const isTodosEmpty = !todos.length;
-  const isActiveTodosEmpty = !activeTodos.length;
-  const isCompletedTodosEmpty = !completedTodos.length;
-
-  if (!isTodosEmpty) {
-    return (
-      <ul className={styles.list}>
-        <Tabs.Root
-          defaultValue="tab1"
-          value={value}
-          onValueChange={(value) => setValue(value)}
-        >
-          <Tabs.List
-            className={styles.tabsList}
-            aria-label="Manage your account"
-          >
-            <Tabs.Trigger className={styles.tabsTrigger} value="tab1">
-              Все ({todos.length})
-            </Tabs.Trigger>
-            <Tabs.Trigger
-              className={styles.tabsTrigger}
-              value="tab2"
-              disabled={isActiveTodosEmpty}
-            >
-              Активные ({activeTodos.length})
-            </Tabs.Trigger>
-            <Tabs.Trigger
-              className={styles.tabsTrigger}
-              value="tab3"
-              disabled={isCompletedTodosEmpty}
-            >
-              Завершенные ({completedTodos.length})
-            </Tabs.Trigger>
-          </Tabs.List>
-          <Tabs.Content className={styles.tabsContent} value="tab1">
-            {todos.map((todo) => (
-              <Item
-                id={todo.id}
-                title={todo.title}
-                isCompleted={todo.isCompleted}
-                key={todo.id}
-              />
-            ))}
-          </Tabs.Content>
-          <Tabs.Content className={styles.tabsContent} value="tab2">
-            {activeTodos.map((todo) => (
-              <Item
-                id={todo.id}
-                title={todo.title}
-                isCompleted={todo.isCompleted}
-                key={todo.id}
-              />
-            ))}
-          </Tabs.Content>
-          <Tabs.Content className={styles.tabsContent} value="tab3">
-            {completedTodos.map((todo) => (
-              <Item
-                id={todo.id}
-                title={todo.title}
-                isCompleted={todo.isCompleted}
-                key={todo.id}
-              />
-            ))}
-          </Tabs.Content>
-        </Tabs.Root>
-      </ul>
-    );
-  } else {
+  if (!todos.length) {
     return <p className={styles.listEmpty}>Список задач пока пуст...</p>;
   }
+
+  return (
+    <ul className={styles.list}>
+      <Tabs.Root
+        defaultValue={tabValues.all}
+        value={value}
+        onValueChange={(value) => setValue(value)}
+      >
+        <Tabs.List className={styles.tabsList} aria-label="Manage your account">
+          <Tabs.Trigger className={styles.tabsTrigger} value={tabValues.all}>
+            Все ({todos.length})
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className={styles.tabsTrigger}
+            value={tabValues.active}
+            disabled={!activeTodos.length}
+          >
+            Активные ({activeTodos.length})
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className={styles.tabsTrigger}
+            value={tabValues.completed}
+            disabled={!completedTodos.length}
+          >
+            Завершенные ({completedTodos.length})
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content className={styles.tabsContent} value={tabValues.all}>
+          {todos.map((todo) => (
+            <Item
+              id={todo.id}
+              title={todo.title}
+              isCompleted={todo.isCompleted}
+              key={todo.id}
+            />
+          ))}
+        </Tabs.Content>
+        <Tabs.Content className={styles.tabsContent} value={tabValues.active}>
+          {activeTodos.map((todo) => (
+            <Item
+              id={todo.id}
+              title={todo.title}
+              isCompleted={todo.isCompleted}
+              key={todo.id}
+            />
+          ))}
+        </Tabs.Content>
+        <Tabs.Content
+          className={styles.tabsContent}
+          value={tabValues.completed}
+        >
+          {completedTodos.map((todo) => (
+            <Item
+              id={todo.id}
+              title={todo.title}
+              isCompleted={todo.isCompleted}
+              key={todo.id}
+            />
+          ))}
+        </Tabs.Content>
+      </Tabs.Root>
+    </ul>
+  );
 }
 
 export default List;

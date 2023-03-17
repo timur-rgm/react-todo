@@ -1,11 +1,11 @@
+import EdiText from "react-editext";
 import cn from "classnames";
-import styles from "./Item.module.scss";
+import { useDispatch } from "react-redux";
+import { changeTodoStatus, deleteTodo, editTodo } from "../../store/todo/todoSlice";
 import checkmarkIcon from "../../assets/images/checkmark-icon.svg";
 import moveIcon from "../../assets/images/move-icon.svg";
-import editIcon from "../../assets/images/edit-icon.svg";
 import closeIcon from "../../assets/images/close-icon.svg";
-import { useDispatch } from "react-redux";
-import { changeTodoStatus, deleteTodo } from "../../store/todo/todoSlice";
+import styles from "./Item.module.scss";
 
 type ItemProps = {
   id: string;
@@ -16,12 +16,16 @@ type ItemProps = {
 function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
   const dispatch = useDispatch();
 
-  const handleCompleteClick = () => {
+  const handleTodoComplete = () => {
     dispatch(changeTodoStatus(id));
   };
 
-  const handleDeleteClick = () => {
+  const handleTodoDelete = () => {
     dispatch(deleteTodo(id));
+  };
+
+  const handleTodoEdit = (value: string) => {
+    dispatch(editTodo({value, id}));
   };
 
   return (
@@ -33,17 +37,21 @@ function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
         title="Завершить"
         width={25}
         height={25}
-        onClick={handleCompleteClick}
+        onClick={handleTodoComplete}
       />
-      <p>{title}</p>
-      <img
-        className={styles.editIcon}
-        src={editIcon}
-        alt="Иконка редактировать"
-        title="Редактировать"
-        width={15}
-        height={15}
-      />
+      <p>
+        <EdiText
+          type="text"
+          value={title}
+          onSave={handleTodoEdit}
+          showButtonsOnHover
+          submitOnUnfocus
+          submitOnEnter
+          editButtonClassName={styles.editButton}
+          saveButtonClassName={styles.saveButton}
+          cancelButtonClassName={styles.cancelButton}
+        />
+      </p>
       <img
         className={styles.moveIcon}
         src={moveIcon}
@@ -59,7 +67,7 @@ function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
         title="Удалить"
         width={22}
         height={22}
-        onClick={handleDeleteClick}
+        onClick={handleTodoDelete}
       />
     </li>
   );

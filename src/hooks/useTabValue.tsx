@@ -18,20 +18,18 @@ export const useTabValue = () => {
   if (currentTabValue === tabValues.active) {
     if (!activeTodos.length) {
       setCurrentTabValue(tabValues.all);
-    } else {
-      value = currentTabValue;
     }
 
+    value = currentTabValue;
     return [value, setValue] as const;
   }
 
   if (currentTabValue === tabValues.completed) {
     if (!completedTodos.length) {
       setCurrentTabValue(tabValues.all);
-    } else {
-      value = currentTabValue;
     }
 
+    value = currentTabValue;
     return [value, setValue] as const;
   }
 

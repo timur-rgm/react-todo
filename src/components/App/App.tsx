@@ -1,5 +1,5 @@
-import Form from "../components/Form/Form";
-import List from "../components/List/List";
+import Form from "../Form/Form";
+import List from "../List/List";
 import styles from "./App.module.scss";
 
 function App(): JSX.Element {
