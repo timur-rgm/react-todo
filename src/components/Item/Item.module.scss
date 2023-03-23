@@ -16,6 +16,10 @@
       opacity: 1;
     }
   }
+
+  &.selected {
+    background-color: var(--color-light-grey);
+  }
 }
 
 .completeIcon {
@@ -50,6 +54,16 @@
   }
 }
 
+.moveIcon {
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
 .closeIcon {
   margin-left: auto;
   opacity: 0.2;
@@ -67,7 +81,7 @@
 .editButton {
   width: 15px;
   height: 15px;
-  margin-left: 5px;
+  margin-left: 10px;
   border: none;
   background-color: white;
   background-image: url("../../assets/images/edit-icon.svg");
@@ -84,13 +98,25 @@
   }
 }
 
+.item:hover .editButton {
+  visibility: visible;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
 .saveButton {
   width: 20px;
   height: 20px;
   margin-left: 5px;
   border: none;
   background-color: white;
-  background-image: url("../../assets/images/checkmark-frameless-icon.svg");
+  background-image: url("../../assets/images/save-icon.svg");
   background-size: 20px 20px;
   opacity: 0.4;
   cursor: pointer;

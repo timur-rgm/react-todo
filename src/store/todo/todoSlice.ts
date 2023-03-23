@@ -30,9 +30,28 @@ export const todoSlice = createSlice({
         (todo) => todo.id !== action.payload
       );
     },
+    swapTodo: (
+      state,
+      action: PayloadAction<{ draggedId: string; droppedId: string }>
+    ) => {
+      const draggedIndex = state.todoList.findIndex(
+        (item) => item.id === action.payload.draggedId
+      );
+      const droppedIndex = state.todoList.findIndex(
+        (item) => item.id === action.payload.droppedId
+      );
+
+      const deletedEl = state.todoList.splice(draggedIndex, 1)[0];
+
+      state.todoList = [
+        ...state.todoList.slice(0, droppedIndex),
+        deletedEl,
+        ...state.todoList.slice(droppedIndex),
+      ];
+    },
   },
 });
 
-export const { addTodo, changeTodoStatus, editTodo, deleteTodo } =
+export const { addTodo, changeTodoStatus, editTodo, swapTodo, deleteTodo } =
   todoSlice.actions;
 export default todoSlice.reducer;

@@ -1,17 +1,22 @@
-import * as Tabs from "@radix-ui/react-tabs";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   getAllTodos,
   getActiveTodos,
   getCompletedTodos,
 } from "../../store/todo/selectors";
+
+import * as Tabs from "@radix-ui/react-tabs";
+
 import Item from "../Item/Item";
 import { useTabValue } from "../../hooks/useTabValue";
 import { tabValues } from "../../const/tabs";
+
 import styles from "./List.module.scss";
 
 function List(): JSX.Element {
   const [value, setValue] = useTabValue();
+  const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
 
   const todos = useSelector(getAllTodos);
   const activeTodos = useSelector(getActiveTodos);
@@ -54,6 +59,8 @@ function List(): JSX.Element {
               title={todo.title}
               isCompleted={todo.isCompleted}
               key={todo.id}
+              draggedTaskId={draggedTaskId}
+              onDraggedTaskIdChange={setDraggedTaskId}
             />
           ))}
         </Tabs.Content>
@@ -64,6 +71,8 @@ function List(): JSX.Element {
               title={todo.title}
               isCompleted={todo.isCompleted}
               key={todo.id}
+              draggedTaskId={draggedTaskId}
+              onDraggedTaskIdChange={setDraggedTaskId}
             />
           ))}
         </Tabs.Content>
@@ -77,6 +86,8 @@ function List(): JSX.Element {
               title={todo.title}
               isCompleted={todo.isCompleted}
               key={todo.id}
+              draggedTaskId={draggedTaskId}
+              onDraggedTaskIdChange={setDraggedTaskId}
             />
           ))}
         </Tabs.Content>

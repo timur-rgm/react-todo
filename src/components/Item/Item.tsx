@@ -1,19 +1,38 @@
+import { useState, DragEvent, SetStateAction, Dispatch } from "react";
+import { useDispatch } from "react-redux";
+import {
+  changeTodoStatus,
+  deleteTodo,
+  editTodo,
+  swapTodo,
+} from "../../store/todo/todoSlice";
+
 import EdiText from "react-editext";
 import cn from "classnames";
-import { useDispatch } from "react-redux";
-import { changeTodoStatus, deleteTodo, editTodo } from "../../store/todo/todoSlice";
+
 import checkmarkIcon from "../../assets/images/checkmark-icon.svg";
 import moveIcon from "../../assets/images/move-icon.svg";
 import closeIcon from "../../assets/images/close-icon.svg";
+
 import styles from "./Item.module.scss";
 
 type ItemProps = {
   id: string;
   title: string;
   isCompleted: boolean;
+  draggedTaskId: string | null;
+  onDraggedTaskIdChange: Dispatch<SetStateAction<string | null>>;
 };
 
-function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
+function Item({
+  id,
+  title,
+  isCompleted,
+  draggedTaskId,
+  onDraggedTaskIdChange,
+}: ItemProps): JSX.Element {
+  const [isSelected, setIsSelected] = useState(false);
+
   const dispatch = useDispatch();
 
   const handleTodoComplete = () => {
@@ -25,11 +44,40 @@ function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
   };
 
   const handleTodoEdit = (value: string) => {
-    dispatch(editTodo({value, id}));
+    dispatch(editTodo({ value, id }));
+  };
+
+  const handleOnDrop = (evt: DragEvent<HTMLLIElement>, id: string) => {
+    evt.preventDefault();
+    draggedTaskId &&
+      dispatch(swapTodo({ draggedId: draggedTaskId, droppedId: id }));
+    setIsSelected(false);
+  };
+
+  const handleOnDragStart = (id: string) => {
+    onDraggedTaskIdChange(id);
+  };
+
+  const handleOnDragLeave = () => {
+    setIsSelected(false);
+  };
+
+  const handleOnDragOver = (evt: DragEvent<HTMLLIElement>) => {
+    evt.preventDefault();
+    setIsSelected(true);
   };
 
   return (
-    <li className={cn(styles.item, { [styles.completed]: isCompleted })}>
+    <li
+      onDragStart={() => handleOnDragStart(id)}
+      onDrop={(evt) => handleOnDrop(evt, id)}
+      onDragLeave={handleOnDragLeave}
+      onDragOver={(evt) => handleOnDragOver(evt)}
+      className={cn(styles.item, {
+        [styles.completed]: isCompleted,
+        [styles.selected]: isSelected,
+      })}
+    >
       <img
         className={styles.completeIcon}
         src={checkmarkIcon}
@@ -39,7 +87,7 @@ function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
         height={25}
         onClick={handleTodoComplete}
       />
-      <p>
+      <p className={styles.text}>
         <EdiText
           type="text"
           value={title}
@@ -59,6 +107,7 @@ function Item({ id, title, isCompleted}: ItemProps): JSX.Element {
         title="Переместить"
         width={22}
         height={22}
+        draggable
       />
       <img
         className={styles.closeIcon}
