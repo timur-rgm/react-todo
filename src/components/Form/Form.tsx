@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import {FormEvent, useRef, useState} from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../../store/todo/todoSlice";
 import { createTodo } from "../../helpers/createTodo";
@@ -9,9 +9,12 @@ function Form() {
   const [inputValue, setInputValue] = useState("");
   const [isValid, setIsValid] = useState(true);
 
+  const inputRef =  useRef<HTMLInputElement>(null);
+
   const dispatch = useDispatch();
 
   const handleInputChange = (value: string) => {
+    setIsValid(true);
     setInputValue(value);
   };
 
@@ -21,6 +24,7 @@ function Form() {
     if (!inputValue.trim()) {
       setIsValid(false);
       setInputValue("");
+      inputRef?.current?.focus();
       return;
     }
 
@@ -28,6 +32,7 @@ function Form() {
     dispatch(addTodo(newTodo));
     setInputValue("");
     setIsValid(true);
+    inputRef?.current?.focus();
   };
 
   return (
@@ -36,11 +41,14 @@ function Form() {
         <p className={styles.errorMessage}>Поле не может быть пустым</p>
       )}
       <input
+        ref={inputRef}
         className={cn(styles.input, { [styles.invalid]: !isValid })}
         type="text"
         placeholder="Придумайте задачу"
+        autoFocus
         value={inputValue}
         onChange={(evt) => handleInputChange(evt.target.value)}
+        onBlur={() => setIsValid(true)}
       />
       <button className={styles.button} type="submit">
         Добавить
