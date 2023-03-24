@@ -87,7 +87,7 @@ function Item({
         height={25}
         onClick={handleTodoComplete}
       />
-      <p className={styles.text}>
+      <p className={styles.todoText}>
         <EdiText
           type="text"
           value={title}

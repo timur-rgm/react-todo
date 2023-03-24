@@ -23,8 +23,10 @@
   padding: 0 20px;
   height: 45px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 700;
   line-height: 1;
+  color: var(--color-blue);
   background-color: white;
   border: none;
   user-select: none;
@@ -32,17 +34,24 @@
   &[data-state="active"] {
     color: var(--color-white);
     background-color: var(--color-blue);
+    cursor: pointer;
   }
 
   &:not([data-state="active"]) {
-    &:hover {
-      opacity: 0.8;
-      cursor: pointer;
+    &:not(:disabled) {
+      &:hover {
+        opacity: 0.8;
+        cursor: pointer;
+      }
     }
 
     &:not(:last-child) {
       border-right: 1px solid var(--color-light-grey);
     }
+  }
+
+  &:disabled {
+    opacity: 0.3;
   }
 }
 
