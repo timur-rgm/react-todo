@@ -19,14 +19,18 @@
   &::placeholder {
     font-size: 16px;
   }
+
+  &.invalid {
+    border-color: var(--color-error);
+  }
 }
 
 .button {
   position: absolute;
   width: 150px;
-  top: 0;
-  right: 0;
-  height: 55px;
+  top: 1px;
+  right: 1px;
+  height: 53px;
   padding: 15px 20px;
   font-family: inherit;
   font-size: 14px;
@@ -40,4 +44,12 @@
   &:hover {
     opacity: 0.9;
   }
+}
+
+.errorMessage {
+  position: absolute;
+  top: -25px;
+  left: 5px;
+  font-size: 14px;
+  color: var(--color-error);
 }
